@@ -44,14 +44,14 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/enroll/{courseId}")
-    public ResponseEntity<Void> enrollUserToCourse(@PathVariable UUID userId, @PathVariable UUID courseId) {
-        userService.enrollUserToCourse(userId, courseId);
+    public ResponseEntity<Void> enrollUserToCourse(@Valid @RequestBody EnrollmentDTO request) {
+        userService.enrollUserToCourse(request);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{userId}/unenroll/{courseId}")
-    public ResponseEntity<Void> unenrollUserFromCourse(@PathVariable UUID userId, @PathVariable UUID courseId) {
-        userService.unenrollUserFromCourse(userId, courseId);
+    public ResponseEntity<Void> unenrollUserFromCourse(@Valid @RequestBody EnrollmentDTO request) {
+        userService.unenrollUserFromCourse(request);
         return ResponseEntity.ok().build();
     }
 }

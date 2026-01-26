@@ -3,6 +3,7 @@ package cz.osu.backend.service;
 import cz.osu.backend.exception.ResourceNotFoundException;
 import cz.osu.backend.model.db.Course;
 import cz.osu.backend.model.db.User;
+import cz.osu.backend.model.json.EnrollmentDTO;
 import cz.osu.backend.model.json.UserRequestDTO;
 import cz.osu.backend.repository.CourseRepository;
 import cz.osu.backend.repository.UserRepository;
@@ -51,16 +52,16 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
-    public void enrollUserToCourse(UUID userId, UUID courseId) {
-        User user = getUserById(userId);
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+    public void enrollUserToCourse(EnrollmentDTO request) {
+        User user = getUserById(request.getUserId());
+        Course course = courseRepository.findById(request.getCourse()).orElseThrow(() -> new ResourceNotFoundException("Course not found"));
         user.getCourses().add(course);
         userRepository.save(user);
     }
 
-    public void unenrollUserFromCourse(UUID userId, UUID courseId) {
-        User user = getUserById(userId);
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+    public void unenrollUserFromCourse(EnrollmentDTO request) {
+        User user = getUserById(request.getUserId());
+        Course course = courseRepository.findById(request.getCourse()).orElseThrow(() -> new ResourceNotFoundException("Course not found"));
         user.getCourses().remove(course);
         userRepository.save(user);
     }
