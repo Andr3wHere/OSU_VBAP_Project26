@@ -6,7 +6,6 @@ import cz.osu.backend.model.db.User;
 import cz.osu.backend.model.json.UserRole;
 import cz.osu.backend.repository.CategoryRepository;
 import cz.osu.backend.repository.UserRepository;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
