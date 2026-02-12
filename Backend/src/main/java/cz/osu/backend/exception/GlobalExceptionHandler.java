@@ -1,6 +1,7 @@
 package cz.osu.backend.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import jakarta.persistence.PersistenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -67,6 +68,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Map<String, Object>> handleAuthenticationException(AuthenticationException ex) {
         return buildErrorResponse(HttpStatus.UNAUTHORIZED, "Chyba autentizace: " + ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(PersistenceException.class)
+    public ResponseEntity<Map<String, Object>> handlePersistenceException(PersistenceException ex) {
+        return buildErrorResponse(HttpStatus.CONFLICT, "Chyba persistence: " + ex.getMessage(), null);
     }
 
     @ExceptionHandler(Exception.class)
