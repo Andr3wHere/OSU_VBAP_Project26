@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.withUsername(user.getUsername()).password(user.getPassword()).authorities(new ArrayList<>()).build();
     }
 
-    public Page<UserResponseDTO> getAllCourses(Pageable pageable) {
+    public Page<UserResponseDTO> getAllUsers(Pageable pageable) {
         Page<User> userPage = userRepository.findAll(pageable);
 
         return userPage.map(user -> {
