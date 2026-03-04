@@ -2,8 +2,11 @@ package cz.osu.backend.controller.user;
 
 import cz.osu.backend.model.db.User;
 import cz.osu.backend.model.dto.user.UserRequestDTO;
+import cz.osu.backend.model.dto.user.UserResponseDTO;
 import cz.osu.backend.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,11 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping
+    public Page<UserResponseDTO> getAllUsers(Pageable pageable) {
+        return userService.getAllUsers(pageable);
     }
 
     @GetMapping("/{id}")

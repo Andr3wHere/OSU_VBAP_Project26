@@ -4,9 +4,12 @@ import cz.osu.backend.exception.ResourceNotFoundException;
 import cz.osu.backend.model.db.Course;
 import cz.osu.backend.model.db.User;
 import cz.osu.backend.model.dto.user.UserRequestDTO;
+import cz.osu.backend.model.dto.user.UserResponseDTO;
 import cz.osu.backend.repository.CourseRepository;
 import cz.osu.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +33,19 @@ public class UserService implements UserDetailsService {
         User user = userRepository.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Uživatel nenalezen: " + username));
 
         return org.springframework.security.core.userdetails.User.withUsername(user.getUsername()).password(user.getPassword()).authorities(new ArrayList<>()).build();
+    }
+
+    public Page<UserResponseDTO> getAllCourses(Pageable pageable) {
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        return userPage.map(user -> {
+            UserResponseDTO dto = new UserResponseDTO();
+            dto.setId(user.getId());
+            dto.setUsername(user.getUsername());
+            dto.setRole(user.getRole());
+
+            return dto;
+        });
     }
 
     public User getUserById(UUID id) {
