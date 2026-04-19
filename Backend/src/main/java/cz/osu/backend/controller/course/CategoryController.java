@@ -3,8 +3,11 @@ package cz.osu.backend.controller.course;
 import cz.osu.backend.model.db.Category;
 import cz.osu.backend.model.dto.course.CategoryRequestDTO;
 import cz.osu.backend.model.dto.course.CategoryResponseDTO;
+import cz.osu.backend.model.dto.course.CourseResponseDTO;
 import cz.osu.backend.service.CategoryService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +29,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
+    public Page<CategoryResponseDTO> getAllCategories(Pageable pageable) {
+        return categoryService.getAllCategories(pageable);
     }
 
     @GetMapping("/{id}")

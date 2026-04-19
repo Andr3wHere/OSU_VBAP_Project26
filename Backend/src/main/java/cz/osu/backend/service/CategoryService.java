@@ -2,10 +2,14 @@ package cz.osu.backend.service;
 
 import cz.osu.backend.exception.ResourceNotFoundException;
 import cz.osu.backend.model.db.Category;
+import cz.osu.backend.model.db.Course;
 import cz.osu.backend.model.dto.course.CategoryRequestDTO;
 import cz.osu.backend.model.dto.course.CategoryResponseDTO;
+import cz.osu.backend.model.dto.course.CourseResponseDTO;
 import cz.osu.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +33,15 @@ public class CategoryService {
         return response;
     }
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public Page<CategoryResponseDTO> getAllCategories(Pageable pageable) {
+        Page<Category> categoryPage = categoryRepository.findAll(pageable);
+
+        return categoryPage.map(category -> {
+            CategoryResponseDTO dto = new CategoryResponseDTO();
+            dto.setId(category.getId());
+            dto.setName(category.getName());
+            return dto;
+        });
     }
 
     public Category getCategoryById(UUID id) {
