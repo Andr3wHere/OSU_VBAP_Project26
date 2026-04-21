@@ -43,6 +43,7 @@ public class CourseService {
         response.setName(savedCourse.getName());
         response.setDescription(savedCourse.getDescription());
         response.setCategoryName(savedCourse.getCategory().getName());
+        response.setTeacherName(savedCourse.getTeacher().getUsername());
 
         return response;
     }
@@ -55,6 +56,7 @@ public class CourseService {
             dto.setId(course.getId());
             dto.setName(course.getName());
             dto.setDescription(course.getDescription());
+            dto.setTeacherName(course.getTeacher().getUsername());
 
             if (course.getCategory() != null) {
                 dto.setCategoryName(course.getCategory().getName());
@@ -72,10 +74,6 @@ public class CourseService {
         return courseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Kurz s ID " + id + " nebyl nalezen"));
     }
 
-    public Course getCourseByName(String name) {
-        return courseRepository.getCourseByName(name);
-    }
-
     public CourseResponseDTO updateCourse(UUID id, CourseRequestDTO request) throws BadRequestException {
         Course course = getCourseById(id);
         course.setName(request.getName());
@@ -89,5 +87,9 @@ public class CourseService {
             throw new ResourceNotFoundException("Kurz s ID " + id + " nebyl nalezen");
         }
         courseRepository.deleteById(id);
+    }
+
+    public CourseResponseDTO getCourseResponseById(UUID id) {
+        return getCourseResponseDTO(getCourseById(id));
     }
 }

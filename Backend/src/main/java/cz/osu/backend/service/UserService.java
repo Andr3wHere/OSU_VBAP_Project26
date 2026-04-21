@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -52,8 +54,14 @@ public class UserService implements UserDetailsService {
         return userRepository.getUserById(id).orElseThrow(() -> new UsernameNotFoundException("Uživatel nenalezen: " + id));
     }
 
-    public User getUserByUsername(String username) {
-        return userRepository.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Uživatel nenalezen: " + username));
+    public UserResponseDTO getUserByUsername(String username) {
+        User user = userRepository.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Uživatel nenalezen: " + username));
+        UserResponseDTO response = new UserResponseDTO();
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setRole(user.getRole());
+
+        return response;
     }
 
     public User updateUser(UUID id, UserRequestDTO request) {
@@ -79,5 +87,15 @@ public class UserService implements UserDetailsService {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new ResourceNotFoundException("Course not found"));
         user.getCourses().remove(course);
         userRepository.save(user);
+    }
+
+    public List<String> getUserEnrollments(UUID userId) {
+        User user = getUserById(userId);
+        Set<Course> userCourses = user.getCourses();
+        List<String> userCourseIds = new ArrayList<>();
+        for (Course course : userCourses) {
+            userCourseIds.add(course.getId().toString());
+        }
+        return userCourseIds;
     }
 }

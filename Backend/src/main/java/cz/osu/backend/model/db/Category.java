@@ -1,5 +1,6 @@
 package cz.osu.backend.model.db;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,5 +23,6 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     private List<Course> courses;
 }

@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -29,4 +31,10 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

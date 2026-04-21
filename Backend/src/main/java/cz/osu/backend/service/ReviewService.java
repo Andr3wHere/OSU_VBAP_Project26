@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,15 +34,19 @@ public class ReviewService {
         User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         review.setCourse(course);
         review.setUser(user);
+        review.setCreatedAt(LocalDateTime.now());
         return reviewRepository.save(review);
     }
 
     private ReviewResponseDTO getReviewResponse(Review review) {
         ReviewResponseDTO response = new ReviewResponseDTO();
+        response.setId(review.getId());
         response.setRating(review.getRating());
         response.setUsername(review.getUser().getUsername());
         response.setComment(review.getComment());
         response.setCourse(review.getCourse().getName());
+        response.setCreatedAt(review.getCreatedAt());
+        response.setUpdatedAt(review.getUpdatedAt());
 
         return response;
     }
@@ -59,6 +64,7 @@ public class ReviewService {
         Review review = getReviewById(id);
         review.setRating(request.getRating());
         review.setComment(request.getComment());
+        review.setUpdatedAt(LocalDateTime.now());
         reviewRepository.save(review);
         return getReviewResponse(review);
     }

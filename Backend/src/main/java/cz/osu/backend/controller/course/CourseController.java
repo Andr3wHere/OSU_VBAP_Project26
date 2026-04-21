@@ -37,8 +37,8 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public Course getCourseById(@PathVariable UUID id) {
-        return courseService.getCourseById(id);
+    public CourseResponseDTO getCourseById(@PathVariable UUID id) {
+        return courseService.getCourseResponseById(id);
     }
 
     @PutMapping("/{id}")

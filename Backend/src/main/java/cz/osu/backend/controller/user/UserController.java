@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/name/{username}")
-    public User getUserByUsername(@PathVariable String username) {
+    public UserResponseDTO getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
@@ -61,5 +62,10 @@ public class UserController {
     public ResponseEntity<Void> unenrollUserFromCourse(@PathVariable UUID userId, @PathVariable UUID courseId) {
         userService.unenrollUserFromCourse(userId, courseId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{userId}/enrollments")
+    public List<String> getEnrolledCourses(@PathVariable UUID userId) {
+        return userService.getUserEnrollments(userId);
     }
 }
